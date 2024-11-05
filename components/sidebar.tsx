@@ -7,3 +7,5 @@ export async function Sidebar() {
     </div>
   )
 }
+
+// TODO: Hide the history chat sidebar in `layout.tsx`

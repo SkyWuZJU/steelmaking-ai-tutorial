@@ -9,6 +9,11 @@ async function getRedis(): Promise<RedisWrapper> {
   return await getRedisClient()
 }
 
+/**
+ * Get all chats for a user
+ * @param userId - The user ID
+ * @returns An array of chats
+ */
 export async function getChats(userId?: string | null) {
   if (!userId) {
     return []
@@ -57,6 +62,12 @@ export async function getChats(userId?: string | null) {
   }
 }
 
+/**
+ * Get one singular chat by its ID
+ * @param id - The chat ID
+ * @param userId - The user ID. It's declared but its value is never used. By default to 'anonymous'
+ * @returns The chat
+ */
 export async function getChat(id: string, userId: string = 'anonymous') {
   const redis = await getRedis()
   const chat = await redis.hgetall<Chat>(`chat:${id}`)

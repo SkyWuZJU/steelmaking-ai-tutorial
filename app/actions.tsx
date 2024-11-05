@@ -36,7 +36,9 @@ async function submit(
   const isCollapsed = createStreamableValue(false)
 
   const aiMessages = [...(retryMessages ?? aiState.get().messages)]
+
   // Get the messages from the state, filter out the tool messages
+  // TODO: comment out or update the filter logic if necessary
   const messages: CoreMessage[] = aiMessages
     .filter(
       message =>
@@ -52,6 +54,7 @@ async function submit(
 
   // Limit the number of messages to the maximum
   messages.splice(0, Math.max(messages.length - MAX_MESSAGES, 0))
+  
   // Get the user input from the form data
   const userInput = skip
     ? `{"action": "skip"}`
@@ -146,6 +149,9 @@ export const AI = createAI<AIState, UIState>({
   },
   onSetAIState: async ({ state, done }) => {
     'use server'
+    /**
+     * Save the chat to the database if there is any message of type 'answer' in the state messages
+     */
 
     // Check if there is any message of type 'answer' in the state messages
     if (!state.messages.some(e => e.type === 'answer')) {
@@ -205,6 +211,7 @@ export const getUIStateFromAIState = (aiState: Chat) => {
       )
         return null
 
+      // In the MVP, we only have user input and assistant answer
       switch (role) {
         case 'user':
           switch (type) {
@@ -223,6 +230,7 @@ export const getUIStateFromAIState = (aiState: Chat) => {
                 )
               }
             case 'inquiry':
+            // displaying user selections or filters before processing a search or query.
               return {
                 id,
                 component: <CopilotDisplay content={content} />

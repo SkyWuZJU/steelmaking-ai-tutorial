@@ -3,6 +3,11 @@ import Link from 'next/link'
 import { SiDiscord, SiGithub, SiX } from 'react-icons/si'
 import { Button } from './ui/button'
 
+// TODO: Update the footer. Currently it offers three CTAs:
+// 1. Discord
+// 2. X
+// 3. Github
+
 const Footer: React.FC = () => {
   return (
     <footer className="w-fit p-1 md:p-2 fixed bottom-0 right-0">

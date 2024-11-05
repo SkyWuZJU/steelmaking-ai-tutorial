@@ -23,11 +23,12 @@ export async function researcher(
       model: getModel(),
       system: `${SYSTEM_PROMPT} Current date and time: ${currentDate}`,
       messages: messages,
-      tools: getTools({
-        uiStream,
-        fullResponse
-      }),
-      maxSteps: 5,
+      // TODO: Unomment the tools once we have them working
+      // tools: getTools({
+      //   uiStream,
+      //   fullResponse
+      // }),
+      // maxSteps: 5,
       onStepFinish: async event => {
         if (event.stepType === 'initial') {
           if (event.toolCalls && event.toolCalls.length > 0) {

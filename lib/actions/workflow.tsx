@@ -9,7 +9,8 @@ import {
   inquire,
   taskManager,
   researcherWithOllama,
-  researcher
+  researcher,
+  steelmakingExpert
 } from '@/lib/agents'
 import { createStreamableValue, createStreamableUI } from 'ai/rsc'
 import { CoreMessage, generateId } from 'ai'
@@ -62,9 +63,10 @@ export async function workflow(
 
   const useOllama = process.env.OLLAMA_MODEL && process.env.OLLAMA_BASE_URL
   // Select the appropriate researcher function based on the environment variables
-  const { text, toolResults } = useOllama
-    ? await researcherWithOllama(uiStream, messages)
-    : await researcher(uiStream, messages)
+  // const { text, toolResults } = useOllama
+  //   ? await researcherWithOllama(uiStream, messages)
+  //   : await researcher(uiStream, messages)
+  const { text, toolResults } = await steelmakingExpert(uiStream, messages)
 
   aiState.update({
     ...aiState.get(),

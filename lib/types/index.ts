@@ -1,3 +1,22 @@
+export interface KnowledgePiece{
+  content: string
+  type: 'text' | 'image' | 'video' | 'audio' | 'file'
+  sourceId: string
+  content_url?: string
+}
+
+export type KnowledgeSource = {
+  id: string
+  name: string
+  url: string
+  uploaderUserId: string
+  format: 'pdf' | 'doc' | 'ppt' | 'webpage' | 'txt'
+  updatedAt: Date
+  createdAt: Date
+}
+
+// Old types defined by Morphic
+
 export type SearchResults = {
   images: SearchResultImage[]
   results: SearchResultItem[]

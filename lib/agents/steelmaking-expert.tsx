@@ -13,6 +13,7 @@ export async function steelmakingExpert(
         let fullResponse = ''
         const streamableText = createStreamableValue<string>()
     
+        // TODO: Use Langchain to replace the streamText call
         const result = await streamText({
             model: openai('gpt-4o'),
             system: SYSTEM_PROMPT,

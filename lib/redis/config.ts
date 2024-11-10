@@ -300,3 +300,7 @@ export async function closeRedisConnection(): Promise<void> {
     localRedisClient = null
   }
 }
+
+export async function getRedis(): Promise<RedisWrapper> {
+  return await getRedisClient()
+}

@@ -3,11 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { type Chat } from '@/lib/types'
-import { getRedisClient, RedisWrapper } from '@/lib/redis/config'
-
-async function getRedis(): Promise<RedisWrapper> {
-  return await getRedisClient()
-}
+import { getRedis, RedisWrapper } from '@/lib/redis/config'
 
 /**
  * Get all chats for a user

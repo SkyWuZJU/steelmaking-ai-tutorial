@@ -1,18 +1,27 @@
-export interface KnowledgePiece{
+export interface KnowledgePiece {
   content: string
   type: 'text' | 'image' | 'video' | 'audio' | 'file'
   sourceId: string
   content_url?: string
 }
 
-export type KnowledgeSource = {
+export type KnowledgeFile = {
   id: string
   name: string
-  url: string
+  url?: string
+  vectorIds: string[]
   uploaderUserId: string
   format: 'pdf' | 'doc' | 'ppt' | 'webpage' | 'txt'
-  updatedAt: Date
-  createdAt: Date
+  updatedAt: string
+  createdAt: string
+}
+
+export type User = {
+  id: string
+  fileList: string[]
+  name?: string
+  role: 'admin' | 'user'
+  createdAt: string
 }
 
 // Old types defined by Morphic
@@ -116,9 +125,7 @@ export interface SearXNGResponse {
   results: SearXNGResult[]
 }
 
-
 export type SearXNGImageResult = string
-
 
 export type SearXNGSearchResults = {
   images: SearXNGImageResult[]

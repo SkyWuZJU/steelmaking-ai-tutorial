@@ -63,16 +63,6 @@ export async function createFile(file:KnowledgeFile): Promise<any[]> {
     
     const userId = file.uploaderUserId
 
-    if (userId == 'anonymous') {
-        return await createUser({
-            id: 'anonymous',
-            name: 'anonymous',
-            fileList: [],
-            role: 'user',
-            createdAt: new Date().toISOString()
-        })
-    }
-
     const user = await getUser(userId)
     if (!user) {
         throw new Error('User not found')

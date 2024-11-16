@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label"
 import { toast } from "sonner"
 
 const BACKEND_URL = "http://localhost:3000/api/file/create";
-const ACCEPT_FILE_TYPE = ['.pdf', '.txt', '.docx'];
+const ACCEPT_FILE_TYPE = ['.ppt', '.pptx'];
 
 interface UploadFormProps {
   className?: string
@@ -51,7 +51,7 @@ async function handleSubmit(
   }
 }
 
-export function KnowledgeUploadForm({ className }: UploadFormProps) {
+export default function KnowledgeUploadForm({ className }: UploadFormProps) {
   const [files, setFiles] = React.useState<FileList | null>(null)
   const [isUploading, setIsUploading] = React.useState(false)
   const router = useRouter()
@@ -68,7 +68,6 @@ export function KnowledgeUploadForm({ className }: UploadFormProps) {
         <CardContent>
           <div className="grid w-full gap-4">
             <div className="grid gap-2">
-              <Label htmlFor="files">Files</Label>
               <input
                 id="files"
                 type="file"

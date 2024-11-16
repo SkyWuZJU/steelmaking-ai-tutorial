@@ -21,24 +21,22 @@ export async function POST(request: Request) {
           throw new Error('Invalid file object');
         }
 
-        const NEW_ID = generateId()
-        const TIMESTAMP = new Date().toISOString()
+        const fileMetadata: KnowledgeFile = {
+          id: generateId(),
+          name: file.name,
+          uploaderUserId: 'anonymous', // TODO: retrieve userId from the request
+          updatedAt: new Date().toISOString(),
+          format: 'unknown',
+          vectorIds: [] as string[]
+        }
 
         if (file.name.endsWith('.pptx')||file.name.endsWith('.ppt')) {
 
-          const vectorIds = await indexPpt(file);
-          if (!vectorIds || vectorIds.length === 0) {
-            throw new Error('Failed to index file to vector store');
-          }
+          fileMetadata.format = 'ppt';
+          fileMetadata.vectorIds = await indexPpt(file);
 
-          const fileMetadata: KnowledgeFile = {
-            id: `file:${NEW_ID}`,
-            name: file.name,
-            vectorIds: vectorIds,
-            uploaderUserId: 'anonymous', // TODO: retrieve userId from the request
-            format: 'ppt',
-            createdAt: TIMESTAMP,
-            updatedAt: TIMESTAMP,
+          if (!fileMetadata.vectorIds || fileMetadata.vectorIds.length === 0) {
+            throw new Error('Failed to index file to vector store');
           }
         
           fileProcessResult[file.name] = await addFileMetadataToRedis(fileMetadata);

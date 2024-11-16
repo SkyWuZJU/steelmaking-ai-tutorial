@@ -11,9 +11,8 @@ export type KnowledgeFile = {
   url?: string
   vectorIds: string[]
   uploaderUserId: string
-  format: 'pdf' | 'doc' | 'ppt' | 'webpage' | 'txt'
+  format: 'pdf' | 'doc' | 'ppt' | 'webpage' | 'txt' | 'unknown'
   updatedAt: string
-  createdAt: string
 }
 
 export type User = {

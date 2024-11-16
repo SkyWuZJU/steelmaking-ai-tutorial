@@ -5,7 +5,7 @@ import { getFiles } from "./redis";
 import { PPTXLoader } from "@langchain/community/document_loaders/fs/pptx";
 import { RecursiveCharacterTextSplitter, TextSplitterChunkHeaderOptions } from "langchain/text_splitter";
 
-const vectorstore = new UpstashVectorStore(
+export const vectorstore = new UpstashVectorStore(
     // LangChain Doc for UpstashVectorStore: https://js.langchain.com/docs/integrations/vectorstores/upstash/
     new OpenAIEmbeddings(),
     {

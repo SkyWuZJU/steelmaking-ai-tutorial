@@ -7,15 +7,6 @@ const redis = new Redis({
     token: redisConfig.upstashRedisRestToken
 })
 
-async function getAllFileIds() {
-    const pipeline = redis.pipeline()
-
-    const queryResult = await pipeline.keys('file:*').exec()
-    const fileIds = queryResult.map(result => result[1]) as string[]
-
-    return fileIds
-}
-
 async function getUser(userId: string) {
     const pipeline = redis.pipeline()
 
@@ -42,34 +33,46 @@ export async function getFiles(fileIds: string[]): Promise<(KnowledgeFile | null
     return await pipeline.exec()
 }
 
-export async function removeFile(fileId: string){
+export async function getAllFiles(): Promise<KnowledgeFile[]> {
     const pipeline = redis.pipeline()
 
-    pipeline.del(`file:${fileId}`)
+    const queryResult = await pipeline.scan(0, {match: 'file:*'}).exec()
+    const fileKeys = queryResult[0][1] as string[]
+    console.debug('fileIds:', fileKeys)
+    const files = await getFiles(fileKeys.map(key => key.split(':').at(-1) as string))
 
-    const results = await pipeline.exec()
-    return results
-}
-
-export async function updateFile(fileId: string, file: KnowledgeFile) {
-    const pipeline = redis.pipeline()
-    pipeline.hmset(`file:${fileId}`, file)
-    return await pipeline.exec()
+    return files.filter(file => file !== null) as KnowledgeFile[]
 }
 
 export async function createFile(file:KnowledgeFile): Promise<any[]> {
-    const pipeline = redis.pipeline()
-    pipeline.hmset(`file:${file.id}`, file)
-    
     const userId = file.uploaderUserId
-
     const user = await getUser(userId)
     if (!user) {
         throw new Error('User not found')
     }
 
-    const fileList: string[] = JSON.parse(user.fileList).concat(file.id)
+    const pipeline = redis.pipeline()
+    pipeline.hmset(`file:${file.id}`, file)
+
+    const fileList: string[] = user.fileList=='[]' ? JSON.parse(user.fileList).concat(file.id) : [file.id]
     pipeline.hmset(`user:${userId}`, { fileList: JSON.stringify(fileList) })
 
+    return await pipeline.exec()
+}
+
+export async function removeFile(fileId: string) {
+    const pipeline = redis.pipeline()
+
+    pipeline.del(`file:${fileId}`)
+    const results = await pipeline.exec()
+
+    // TODO: remove file from user's fileList
+
+    return results
+}
+
+export async function updateFile(file: KnowledgeFile) {
+    const pipeline = redis.pipeline()
+    pipeline.hmset(`file:${file.id}`, file)
     return await pipeline.exec()
 }

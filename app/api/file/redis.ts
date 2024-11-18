@@ -1,13 +1,14 @@
 import { redisConfig } from "@/lib/redis/config";
 import { Redis } from '@upstash/redis'
 import { KnowledgeFile, User } from "@/lib/types";
+import { get } from "http";
 
-const redis = new Redis({
+export const redis = new Redis({
     url: redisConfig.upstashRedisRestUrl,
     token: redisConfig.upstashRedisRestToken
 })
 
-async function getUser(userId: string) {
+export async function getUser(userId: string) {
     const pipeline = redis.pipeline()
 
     const queryResult = await pipeline.hgetall(`user:${userId}`).exec()
@@ -60,12 +61,20 @@ export async function createFile(file:KnowledgeFile): Promise<any[]> {
 }
 
 export async function removeFile(fileId: string) {
+    const [file] = await getFiles([fileId])
+    if (!file) {
+        throw new Error('File not found')
+    }
+    const user = await getUser(file.uploaderUserId)
+    if (!user) {
+        throw new Error('User not found')
+    }
     const pipeline = redis.pipeline()
 
     pipeline.del(`file:${fileId}`)
-    const results = await pipeline.exec()
+    pipeline.hmset(`user:${user.id}`, { fileList: JSON.stringify(JSON.parse(user.fileList).filter((id: string) => id !== fileId)) })    
 
-    // TODO: remove file from user's fileList
+    const results = await pipeline.exec()
 
     return results
 }

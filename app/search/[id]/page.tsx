@@ -11,14 +11,16 @@ export interface SearchPageProps {
   }
 }
 
-export async function generateMetadata({ params }: SearchPageProps) {
+export async function generateMetadata(context: SearchPageProps) {
+  const params = await context.params
   const chat = await getChat(params.id, 'anonymous')
   return {
     title: chat?.title.toString().slice(0, 50) || 'Search'
   }
 }
 
-export default async function SearchPage({ params }: SearchPageProps) {
+export default async function SearchPage(context: SearchPageProps) {
+  const params = await context.params
   const userId = 'anonymous'
   const chat = await getChat(params.id, userId)
 

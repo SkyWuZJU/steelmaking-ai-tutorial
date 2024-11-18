@@ -9,8 +9,8 @@ import { SelectedItemProvider, useSelectedItem } from './selected-item-context';
 export default function Page() {
   return (
     <SelectedItemProvider>
-      <div className="flex justify-center items-center p-16 w-screen h-screen ">
-        <div className="flex flex-row w-full h-full max-w-6xl">
+      <div className="flex justify-center items-center p-16 w-screen h-screen">
+        <div className="flex flex-row w-full h-full max-w-6xl gap-1">
           <div className="flex flex-col gap-1 w-1/3 h-full">
             <div className="flex-1 min-h-80 overflow-y-auto">
               <KnowledgeList />

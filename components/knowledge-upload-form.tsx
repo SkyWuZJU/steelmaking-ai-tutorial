@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Label } from "@/components/ui/label"
 import { toast } from "sonner"
 
-const BACKEND_URL = "http://localhost:3000/api/file/create";
+const SERVER_URL = "http://localhost:3000/api/file/create";
 const ACCEPT_FILE_TYPE = ['.ppt', '.pptx'];
 
 interface UploadFormProps {
@@ -34,7 +34,7 @@ async function handleSubmit(
     })
 
     // TODO: Add backend security key for safety
-    const response = await fetch(BACKEND_URL, {
+    const response = await fetch(SERVER_URL, {
       method: "POST",
       body: formData,
     })

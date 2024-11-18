@@ -1,4 +1,4 @@
-// 'use client'
+'use client'
 
 import KnowledgeList from '@/components/knowledge-list'
 import KnowledgeUploadForm from "@/components/knowledge-upload-form"
@@ -18,7 +18,7 @@ export default function Page() {
             <KnowledgeUploadForm className="mt-auto"/>
           </div>
           <div className="w-2/3 h-full justify-center items-center">
-            {/* <DetailSection /> */}
+            <DetailSection />
           </div>
         </div>
       </div>

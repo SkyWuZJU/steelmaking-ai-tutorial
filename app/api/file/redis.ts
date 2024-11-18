@@ -38,7 +38,6 @@ export async function getAllFiles(): Promise<KnowledgeFile[]> {
 
     const queryResult = await pipeline.scan(0, {match: 'file:*'}).exec()
     const fileKeys = queryResult[0][1] as string[]
-    console.debug('fileIds:', fileKeys)
     const files = await getFiles(fileKeys.map(key => key.split(':').at(-1) as string))
 
     return files.filter(file => file !== null) as KnowledgeFile[]

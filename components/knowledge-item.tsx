@@ -17,7 +17,11 @@ const KnowledgeItem: React.FC<KnowledgeItemProps> = ({ file }) => {
 
     return (
         <Button
-            onClick={() => setItemId(file.id)}
+            onClick={() => {
+                setItemId(file.id);
+                // refresh the page
+                // window.location.reload();
+            }}
             className={cn(
                 'flex flex-col hover:bg-muted cursor-pointer p-2 rounded border',
                 isActive ? 'bg-muted/70 border-border' : 'border-transparent'

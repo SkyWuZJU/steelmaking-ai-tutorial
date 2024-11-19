@@ -15,7 +15,7 @@ const KnowledgeList: React.FC<KnowledgeListProps> = () => {
 
   useEffect(() => {
     const loadFiles = async () => {
-      const SERVER_URL = `${window.location.origin}/api/file/get-all-id`
+      const SERVER_URL = `/api/file/get-all-id`
 
       try {
         const response = await fetch(SERVER_URL)

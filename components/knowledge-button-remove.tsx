@@ -3,7 +3,7 @@ import { ErrorCard } from './error-card'
 import React, { useEffect, useState } from 'react'
 import { useSelectedItem } from '../app/knowledge/selected-item-context'
 
-const SERVER_URL = `${window.location.origin}/api/file/remove`
+const SERVER_URL = `/api/file/remove`
 
 type RemoveFileButtonProps = {
   fileId: string

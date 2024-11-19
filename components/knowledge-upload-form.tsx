@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/card'
 import { toast } from 'sonner'
 
-const SERVER_URL = `${window.location.origin}/api/file/create`
+const SERVER_URL = '/api/file/create'
 const ACCEPT_FILE_TYPE = ['.ppt', '.pptx']
 
 interface UploadFormProps {

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { Button } from './ui/button'
 import { ErrorCard } from './error-card'
 
-const SERVER_URL = 'http://localhost:3000/api/file/update'
+const SERVER_URL = `${window.location.origin}/api/file/update`
 
 type UpdateFileButtonProps = {
   fileId: string

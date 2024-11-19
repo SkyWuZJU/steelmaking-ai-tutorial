@@ -11,10 +11,9 @@ import {
   CardHeader,
   CardTitle
 } from '@/components/ui/card'
-import { Label } from '@/components/ui/label'
 import { toast } from 'sonner'
 
-const SERVER_URL = 'http://localhost:3000/api/file/create'
+const SERVER_URL = `${window.location.origin}/api/file/create`
 const ACCEPT_FILE_TYPE = ['.ppt', '.pptx']
 
 interface UploadFormProps {

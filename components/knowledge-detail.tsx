@@ -22,7 +22,7 @@ const KnowledgeDetail: React.FC<KnowledgeDetailProps> = ({ fileId }) => {
   const [file, setFile] = useState<KnowledgeFile | null>(null)
 
   const fetchFile = async () => {
-    const SERVER_URL = 'http://localhost:3000/api/file/get'
+    const SERVER_URL = `${window.location.origin}/api/file/get`
     const response = await fetch(SERVER_URL, {
       method: 'POST', // Changed to POST as per your original code
       headers: {

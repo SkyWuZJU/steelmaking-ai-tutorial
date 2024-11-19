@@ -5,13 +5,11 @@ import { AI } from '@/app/actions'
 
 export const maxDuration = 60
 
-export interface SearchPageProps {
-  params: {
-    id: string
-  }
-}
+type SearchPageProps = Promise<{
+  id: string
+}>
 
-export async function generateMetadata(context: SearchPageProps) {
+export async function generateMetadata(context: {params: SearchPageProps}) {
   const params = await context.params
   const chat = await getChat(params.id, 'anonymous')
   return {
@@ -19,7 +17,7 @@ export async function generateMetadata(context: SearchPageProps) {
   }
 }
 
-export default async function SearchPage(context: SearchPageProps) {
+export default async function SearchPage(context: {params: SearchPageProps}) {
   const params = await context.params
   const userId = 'anonymous'
   const chat = await getChat(params.id, userId)
@@ -39,7 +37,7 @@ export default async function SearchPage(context: SearchPageProps) {
         messages: chat.messages
       }}
     >
-      <Chat id={params.id} />
+      <Chat id={(await params).id} />
     </AI>
   )
 }

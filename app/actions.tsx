@@ -38,7 +38,6 @@ async function submit(
   const aiMessages = [...(retryMessages ?? aiState.get().messages)]
 
   // Get the messages from the state, filter out the tool messages
-  // TODO: comment out or update the filter logic if necessary
   const messages: CoreMessage[] = aiMessages
     .filter(
       message =>

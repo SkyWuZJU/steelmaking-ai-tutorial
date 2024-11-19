@@ -33,7 +33,6 @@ export async function workflow(
 
   let action = { object: { next: 'proceed' } }
   // If the user does not skip the task, run the task manager
-  // TODO: Comment out the task manager for now
   // if (!skip) action = (await taskManager(messages)) ?? action
 
   if (action.object.next === 'inquire') {

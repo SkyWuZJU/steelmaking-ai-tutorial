@@ -53,7 +53,7 @@ async function submit(
 
   // Limit the number of messages to the maximum
   messages.splice(0, Math.max(messages.length - MAX_MESSAGES, 0))
-  
+
   // Get the user input from the form data
   const userInput = skip
     ? `{"action": "skip"}`
@@ -62,15 +62,15 @@ async function submit(
   const content = skip
     ? userInput
     : formData
-    ? JSON.stringify(Object.fromEntries(formData))
-    : null
+      ? JSON.stringify(Object.fromEntries(formData))
+      : null
   const type = skip
     ? undefined
     : formData?.has('input')
-    ? 'input'
-    : formData?.has('related_query')
-    ? 'input_related'
-    : 'inquiry'
+      ? 'input'
+      : formData?.has('related_query')
+        ? 'input_related'
+        : 'inquiry'
 
   // Add the user message to the state
   if (content) {
@@ -229,7 +229,7 @@ export const getUIStateFromAIState = (aiState: Chat) => {
                 )
               }
             case 'inquiry':
-            // displaying user selections or filters before processing a search or query.
+              // displaying user selections or filters before processing a search or query.
               return {
                 id,
                 component: <CopilotDisplay content={content} />

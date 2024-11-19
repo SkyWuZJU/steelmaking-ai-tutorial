@@ -74,11 +74,13 @@ export const searchTool = ({ uiStream, fullResponse }: ToolProps) =>
           }
           searchResult = await response.json()
         } else {
-          searchResult = await (searchAPI === 'tavily'
-            ? tavilySearch
-            : searchAPI === 'exa'
-            ? exaSearch
-            : searxngSearch)(
+          searchResult = await (
+            searchAPI === 'tavily'
+              ? tavilySearch
+              : searchAPI === 'exa'
+                ? exaSearch
+                : searxngSearch
+          )(
             filledQuery,
             max_results,
             effectiveSearchDepth === 'advanced' ? 'advanced' : 'basic',

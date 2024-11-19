@@ -1,10 +1,10 @@
 'use client'
 
 import KnowledgeList from '@/components/knowledge-list'
-import KnowledgeUploadForm from "@/components/knowledge-upload-form"
-import KnowledgeDetailPlaceholder from "@/components/knowledge-detail-placeholder"
-import KnowledgeDetail from '@/components/knowledge-detail';
-import { SelectedItemProvider, useSelectedItem } from './selected-item-context';
+import KnowledgeUploadForm from '@/components/knowledge-upload-form'
+import KnowledgeDetailPlaceholder from '@/components/knowledge-detail-placeholder'
+import KnowledgeDetail from '@/components/knowledge-detail'
+import { SelectedItemProvider, useSelectedItem } from './selected-item-context'
 
 export default function Page() {
   return (
@@ -15,7 +15,7 @@ export default function Page() {
             <div className="flex-1 min-h-80 overflow-y-auto">
               <KnowledgeList />
             </div>
-            <KnowledgeUploadForm className="mt-auto"/>
+            <KnowledgeUploadForm className="mt-auto" />
           </div>
           <div className="w-2/3 h-full justify-center items-center">
             <DetailSection />
@@ -27,11 +27,11 @@ export default function Page() {
 }
 
 function DetailSection() {
-  const { itemId } = useSelectedItem();
+  const { itemId } = useSelectedItem()
 
   return itemId ? (
     <KnowledgeDetail fileId={itemId} />
   ) : (
     <KnowledgeDetailPlaceholder />
-  );
+  )
 }

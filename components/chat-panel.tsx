@@ -32,15 +32,15 @@ export function ChatPanel({ messages, query }: ChatPanelProps) {
   const [isComposing, setIsComposing] = useState(false) // Composition state
   const [enterDisabled, setEnterDisabled] = useState(false) // Disable Enter after composition ends
 
-  const handleCompositionStart = () => setIsComposing(true);
+  const handleCompositionStart = () => setIsComposing(true)
 
   const handleCompositionEnd = () => {
-    setIsComposing(false);
-    setEnterDisabled(true);
+    setIsComposing(false)
+    setEnterDisabled(true)
     setTimeout(() => {
-      setEnterDisabled(false);
-    }, 300);
-  };
+      setEnterDisabled(false)
+    }, 300)
+  }
 
   async function handleQuerySubmit(query: string, formData?: FormData) {
     setInput(query)

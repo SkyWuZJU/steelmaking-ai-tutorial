@@ -1,15 +1,15 @@
-import { Card, CardContent, CardDescription } from "@/components/ui/card"
+import { Card, CardContent, CardDescription } from '@/components/ui/card'
 
 export default function KnowledgeDetailPlaceholder() {
-    return (
-        <Card className="w-full">
-            <CardContent>
-                <CardDescription className="text-foreground/30 text-sm text-center py-4">
-                    选择或导入文件
-                </CardDescription>
-            </CardContent>
-        </Card>
-    )
+  return (
+    <Card className="w-full">
+      <CardContent>
+        <CardDescription className="text-foreground/30 text-sm text-center py-4">
+          选择或导入文件
+        </CardDescription>
+      </CardContent>
+    </Card>
+  )
 }
 
 // 问题汇总：

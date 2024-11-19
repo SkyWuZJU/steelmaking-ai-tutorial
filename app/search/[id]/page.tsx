@@ -9,7 +9,7 @@ type SearchPageProps = Promise<{
   id: string
 }>
 
-export async function generateMetadata(context: {params: SearchPageProps}) {
+export async function generateMetadata(context: { params: SearchPageProps }) {
   const params = await context.params
   const chat = await getChat(params.id, 'anonymous')
   return {
@@ -17,7 +17,7 @@ export async function generateMetadata(context: {params: SearchPageProps}) {
   }
 }
 
-export default async function SearchPage(context: {params: SearchPageProps}) {
+export default async function SearchPage(context: { params: SearchPageProps }) {
   const params = await context.params
   const userId = 'anonymous'
   const chat = await getChat(params.id, userId)

@@ -1,12 +1,9 @@
-import { CoreMessage} from 'ai'
+import { CoreMessage } from 'ai'
 import { createStreamableUI, createStreamableValue } from 'ai/rsc'
 import { AnswerSection } from '@/components/answer-section'
 import { vectorstore } from '@/app/api/file/vector-store'
 import { ChatOpenAI } from '@langchain/openai'
-import {
-  SystemMessage,
-  HumanMessage,
-} from '@langchain/core/messages'
+import { SystemMessage, HumanMessage } from '@langchain/core/messages'
 import { HumanMessagePromptTemplate } from '@langchain/core/prompts'
 import { DocumentInterface } from '@langchain/core/documents'
 import { convertToLangchainBaseMessage } from './helper-function'
@@ -67,6 +64,6 @@ export async function steelmakingExpert(
 }
 
 const formatDocumentToContext = (documents: DocumentInterface[]): string => {
-    // TODO: Waiting for further implementation. Now just union all the pageContent
-    return documents.map(doc => doc.pageContent).join('\n')
-  }
+  // TODO: Waiting for further implementation. Now just union all the pageContent
+  return documents.map(doc => doc.pageContent).join('\n')
+}

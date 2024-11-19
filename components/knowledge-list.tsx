@@ -1,9 +1,9 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import KnowledgeItem from "./knowledge-item"
-import { KnowledgeFile } from "@/lib/types"
-import { useSelectedItem } from '../app/knowledge/selected-item-context';
+import KnowledgeItem from './knowledge-item'
+import { KnowledgeFile } from '@/lib/types'
+import { useSelectedItem } from '../app/knowledge/selected-item-context'
 
 type KnowledgeListProps = {
   userId?: string
@@ -11,7 +11,7 @@ type KnowledgeListProps = {
 
 const KnowledgeList: React.FC<KnowledgeListProps> = () => {
   const [files, setFiles] = useState<KnowledgeFile[]>([])
-  const { itemId } = useSelectedItem();
+  const { itemId } = useSelectedItem()
 
   useEffect(() => {
     const loadFiles = async () => {
@@ -40,9 +40,7 @@ const KnowledgeList: React.FC<KnowledgeListProps> = () => {
             知识库为空
           </div>
         ) : (
-          files.map((file) => (
-            <KnowledgeItem file={file} key={file.id} />
-          ))
+          files.map(file => <KnowledgeItem file={file} key={file.id} />)
         )}
       </div>
     </div>

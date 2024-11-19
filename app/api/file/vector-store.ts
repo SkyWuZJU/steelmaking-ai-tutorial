@@ -5,7 +5,7 @@ import {
 import { OpenAIEmbeddings } from '@langchain/openai'
 import { Index as UpstashIndex } from '@upstash/vector'
 import { getFiles } from './redis'
-import { PPTXLoader } from '@langchain/community/document_loaders/fs/pptx'
+// import { PPTXLoader } from '@langchain/community/document_loaders/fs/pptx'
 import {
   RecursiveCharacterTextSplitter,
   TextSplitterChunkHeaderOptions
@@ -41,6 +41,8 @@ export async function removeFile(fileId: string) {
  * @returns a list of vector IDs in string
  */
 export async function addPptxFile(blob: Blob) {
+  const { PPTXLoader } = await import('@langchain/community/document_loaders/fs/pptx')
+
   const CHUNK_SIZE = 1000
   const CHUNK_OVERLAP = 200
   const VALID_TYPES = [

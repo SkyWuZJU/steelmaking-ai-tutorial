@@ -257,7 +257,7 @@ export const getUIStateFromAIState = (aiState: Chat) => {
               return {
                 id,
                 component: (
-                  <Section title="Follow-up" className="pb-8">
+                  <Section title="追问" className="pb-8">
                     <FollowupPanel />
                   </Section>
                 )

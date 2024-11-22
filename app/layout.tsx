@@ -14,24 +14,18 @@ const fontSans = FontSans({
   variable: '--font-sans'
 })
 
-const title = 'Morphic'
+const title = '转炉炼钢智能问答'
 const description =
-  'A fully open-source AI-powered answer engine with a generative UI.'
+  '专注于转炉炼钢的智能专家，提出你的问题，获得行业专家级的智能回复。'
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://morphic.sh'),
+  // metadataBase: new URL('https://morphic.sh'),
   title,
   description,
   openGraph: {
     title,
     description
   },
-  twitter: {
-    title,
-    description,
-    card: 'summary_large_image',
-    creator: '@miiura'
-  }
 }
 
 export const viewport: Viewport = {

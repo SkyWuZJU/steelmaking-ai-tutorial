@@ -3,20 +3,16 @@ import { ArrowRight } from 'lucide-react'
 
 const exampleMessages = [
   {
-    heading: 'What is OpenAI o1?',
-    message: 'What is OpenAI o1?'
+    heading: '如何判断钢的含碳量?',
+    message: '如何判断钢的含碳量?'
   },
   {
-    heading: 'Why is Nvidia growing rapidly?',
-    message: 'Why is Nvidia growing rapidly?'
+    heading: '怎么控制回磷和回硫?',
+    message: '怎么控制回磷和回硫?'
   },
   {
-    heading: 'Tesla vs Rivian',
-    message: 'Tesla vs Rivian'
-  },
-  {
-    heading: 'Summary: https://arxiv.org/pdf/2407.16833',
-    message: 'Summary: https://arxiv.org/pdf/2407.16833'
+    heading: '转炉炼钢的长流程有哪几步？',
+    message: '转炉炼钢的长流程有哪几步？'
   }
 ]
 export function EmptyScreen({

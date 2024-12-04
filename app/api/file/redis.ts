@@ -12,7 +12,7 @@ export async function getUser(userId: string) {
   const pipeline = redis.pipeline()
 
   const queryResult = await pipeline.hgetall(`user:${userId}`).exec()
-  const user = queryResult[0] as Record<string, string> | null
+  const user = queryResult[0] as Record<string, any> | null
 
   return user
 }
@@ -81,8 +81,8 @@ export async function removeFile(fileId: string) {
   pipeline.del(`file:${fileId}`)
   pipeline.hmset(`user:${user.id}`, {
     fileList: JSON.stringify(
-      JSON.parse(user.fileList).filter((id: string) => id !== fileId)
-    )
+      user.fileList.filter((id: string) => id !== fileId)
+  )
   })
 
   const results = await pipeline.exec()

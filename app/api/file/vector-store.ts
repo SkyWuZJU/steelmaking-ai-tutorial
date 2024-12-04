@@ -5,11 +5,11 @@ import {
 import { OpenAIEmbeddings } from '@langchain/openai'
 import { Index as UpstashIndex } from '@upstash/vector'
 import { getFiles } from './redis'
-// import { PPTXLoader } from '@langchain/community/document_loaders/fs/pptx'
 import {
   RecursiveCharacterTextSplitter,
   TextSplitterChunkHeaderOptions
 } from 'langchain/text_splitter'
+import { parsePptxToDocument as loadPptx } from './pptx-to-document'
 
 export const vectorstore = new UpstashVectorStore(
   // LangChain Doc for UpstashVectorStore: https://js.langchain.com/docs/integrations/vectorstores/upstash/
@@ -41,12 +41,10 @@ export async function removeFile(fileId: string) {
  * @returns a list of vector IDs in string
  */
 export async function addPptxFile(blob: Blob) {
-  const { PPTXLoader } = await import('@langchain/community/document_loaders/fs/pptx')
 
   const CHUNK_SIZE = 1000
   const CHUNK_OVERLAP = 200
   const VALID_TYPES = [
-    'application/vnd.ms-powerpoint', // MIME 类型 for .ppt
     'application/vnd.openxmlformats-officedocument.presentationml.presentation' // MIME 类型 for .pptx
   ]
 
@@ -58,15 +56,14 @@ export async function addPptxFile(blob: Blob) {
     throw new Error(`Invalid file type: ${blob.type}`)
   }
 
-  const loader = new PPTXLoader(blob)
-  const loadedPpt = await loader.load()
+  const loadedPptx = await loadPptx(blob)
 
   const splitter = new RecursiveCharacterTextSplitter({
     chunkSize: CHUNK_SIZE,
     chunkOverlap: CHUNK_OVERLAP
   })
   const allSplits = await splitter.splitDocuments(
-    loadedPpt
+    loadedPptx
     // {
     //     appendChunkOverlapHeader: true,
     //     chunkHeader: "Auto attach header to each chunk",

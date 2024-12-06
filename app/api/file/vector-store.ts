@@ -54,20 +54,20 @@ export async function addPptxFile(slides: Slide[]) {
 
   const loadedPptx = await loadPptx(slides)
 
-  const splitter = new RecursiveCharacterTextSplitter({
-    chunkSize: CHUNK_SIZE,
-    chunkOverlap: CHUNK_OVERLAP
-  })
-  const allSplits = await splitter.splitDocuments(
-    loadedPptx
-    // {
-    //     appendChunkOverlapHeader: true,
-    //     chunkHeader: "Auto attach header to each chunk",
-    //     chunkOverlapHeader: "Auto attach overlap header to each chunk with overlap"
-    // } as TextSplitterChunkHeaderOptions
-  )
+  // const splitter = new RecursiveCharacterTextSplitter({
+  //   chunkSize: CHUNK_SIZE,
+  //   chunkOverlap: CHUNK_OVERLAP
+  // })
+  // const allSplits = await splitter.splitDocuments(
+  //   loadedPptx
+  //   // {
+  //   //     appendChunkOverlapHeader: true,
+  //   //     chunkHeader: "Auto attach header to each chunk",
+  //   //     chunkOverlapHeader: "Auto attach overlap header to each chunk with overlap"
+  //   // } as TextSplitterChunkHeaderOptions
+  // )
 
-  const results = await vectorstore.addDocuments(allSplits)
+  const results = await vectorstore.addDocuments(loadedPptx)
 
   return results
 }

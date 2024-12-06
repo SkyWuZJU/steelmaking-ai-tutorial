@@ -3,7 +3,7 @@ import { createStreamableUI, createStreamableValue } from 'ai/rsc'
 import { AnswerSection } from '@/components/answer-section'
 import { vectorstore } from '@/app/api/file/vector-store'
 import { ChatOpenAI } from '@langchain/openai'
-import { SystemMessage, HumanMessage } from '@langchain/core/messages'
+import { SystemMessage, HumanMessage, BaseMessage } from '@langchain/core/messages'
 import { HumanMessagePromptTemplate } from '@langchain/core/prompts'
 import { DocumentInterface } from '@langchain/core/documents'
 import { convertToLangchainBaseMessage } from './helper-function'
@@ -13,7 +13,7 @@ const PROMPT = `用户：{user_message}\n参考知识：{context}`
 
 export async function steelmakingExpert(
   uiStream: ReturnType<typeof createStreamableUI>,
-  messages: CoreMessage[]
+  aiMessages: CoreMessage[]
 ) {
   try {
     // Step 1: Prepare required variables
@@ -25,27 +25,25 @@ export async function steelmakingExpert(
       model: 'gpt-4o-mini',
       temperature: 0.5
     })
-    let wrappedMessages = messages
-      .slice(0, -1)
-      .map(convertToLangchainBaseMessage)
-    wrappedMessages.unshift(new SystemMessage(SYSTEM_PROMPT)) // TODO: Check if the system prompt is added duplicatedly
+    let langchainMessages = aiMessages.map(convertToLangchainBaseMessage)
+    langchainMessages = addSystemMessage(langchainMessages, SYSTEM_PROMPT)
 
     // Step 2: Retrieve context knowledge and finalize the message list
     const retrievedDocuments = await retriever.invoke(
-      wrappedMessages[wrappedMessages.length - 1].content as string
+      langchainMessages[langchainMessages.length - 1].content as string
     )
     const lastUserMessage = await humanMessageTemplate.format({
-      user_message: messages[messages.length - 1].content,
+      user_message: aiMessages[aiMessages.length - 1].content,
       context: formatDocumentToContext(retrievedDocuments)
     })
-    wrappedMessages.push(new HumanMessage(lastUserMessage))
+    langchainMessages.push(new HumanMessage(lastUserMessage))
     console.debug(
       '#### Messages ####\n',
-      wrappedMessages.map(msg => `${msg.getType()}\n${msg.content}`).join('\n')
+      langchainMessages.map(msg => `${msg.getType()}\n${msg.content}`).join('\n')
     )
 
     // Step 3: Stream the messages to the model
-    const result = await model.stream(wrappedMessages)
+    const result = await model.stream(langchainMessages)
     uiStream.update(<AnswerSection result={streamableText.value} />)
 
     for await (const chunk of result) {
@@ -66,4 +64,12 @@ export async function steelmakingExpert(
 const formatDocumentToContext = (documents: DocumentInterface[]): string => {
   // TODO: Waiting for further implementation. Now just union all the pageContent
   return documents.map(doc => doc.pageContent).join('\n')
+}
+
+function addSystemMessage(messages: BaseMessage[], systemPrompt: string): BaseMessage[] {
+  if (messages[0].getType() !== 'system') {
+    return [new SystemMessage(systemPrompt), ...messages]    
+  } else {
+    return messages
+  }
 }

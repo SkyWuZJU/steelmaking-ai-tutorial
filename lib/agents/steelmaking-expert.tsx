@@ -28,7 +28,7 @@ export async function steelmakingExpert(
     let wrappedMessages = messages
       .slice(0, -1)
       .map(convertToLangchainBaseMessage)
-    wrappedMessages.unshift(new SystemMessage(SYSTEM_PROMPT))  // TODO: Check if the system prompt is added duplicatedly
+    wrappedMessages.unshift(new SystemMessage(SYSTEM_PROMPT)) // TODO: Check if the system prompt is added duplicatedly
 
     // Step 2: Retrieve context knowledge and finalize the message list
     const retrievedDocuments = await retriever.invoke(

@@ -1,8 +1,25 @@
+import { Slide } from "pptxtojson"
+
 export interface KnowledgePiece {
   content: string
   type: 'text' | 'image' | 'video' | 'audio' | 'file'
   sourceId: string
   content_url?: string
+}
+
+export interface CreateFileApiRequest {
+  slides: {
+    slides: Slide[]
+    size: {
+      width: number
+      height: number
+    }
+  }[]
+  metadata: {
+    fileName: string[]
+    fileId?: string[]
+    <K extends string>(key: K): string[]
+  }
 }
 
 export type KnowledgeFile = {

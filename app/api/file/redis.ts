@@ -82,7 +82,7 @@ export async function removeFile(fileId: string) {
   pipeline.hmset(`user:${user.id}`, {
     fileList: JSON.stringify(
       user.fileList.filter((id: string) => id !== fileId)
-  )
+    )
   })
 
   const results = await pipeline.exec()

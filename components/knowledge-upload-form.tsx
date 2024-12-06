@@ -12,9 +12,12 @@ import {
   CardTitle
 } from '@/components/ui/card'
 import { toast } from 'sonner'
+import { parse } from 'pptxtojson'
+import { metadata } from '@/app/layout'
+import { CreateFileApiRequest } from '@/lib/types'
 
 const SERVER_URL = '/api/file/create'
-const ACCEPT_FILE_TYPE = ['.ppt', '.pptx']
+const ACCEPT_FILE_TYPE = ['.pptx']
 
 interface UploadFormProps {
   className?: string
@@ -34,15 +37,24 @@ async function handleSubmit(
 
   setIsUploading(true)
   try {
-    const formData = new FormData()
-    Array.from(files).forEach(file => {
-      formData.append('files', file)
-    })
+    const parsedFiles = await Promise.all(
+      Array.from(files).map(async file => {
+        const arrayBuffer = await file.arrayBuffer()
+        return await parse(arrayBuffer)
+      })
+    )
 
-    // TODO: Add backend security key for safety
     const response = await fetch(SERVER_URL, {
       method: 'POST',
-      body: formData
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        slides: parsedFiles,
+        metadata: {
+          fileName: Array.from(files).map(file => file.name)
+        }
+      } as CreateFileApiRequest)
     })
 
     if (!response.ok) throw new Error('Upload failed')

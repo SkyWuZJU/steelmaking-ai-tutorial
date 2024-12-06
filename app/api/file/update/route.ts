@@ -1,14 +1,13 @@
-import { KnowledgeFile } from '@/lib/types'
+import { CreateFileApiRequest, KnowledgeFile } from '@/lib/types'
 import { getFiles, updateFile } from '../redis'
 import { updatePptxFile } from '../vector-store'
 
 export async function POST(req: Request) {
   try {
-    const formData = await req.formData()
-    const fileId = formData.get('fileId') as string
-    const file = formData.get('file') as File
+    const data: CreateFileApiRequest = await req.json()
+    const fileId = data.metadata.fileId?.[0]
 
-    if (!fileId || !file) {
+    if (!fileId || !data.slides) {
       return Response.json({ error: 'Missing fileId or file' }, { status: 400 })
     }
 
@@ -20,7 +19,7 @@ export async function POST(req: Request) {
       )
     }
 
-    const updatedVectors = await updatePptxFile(fileData.id, file)
+    const updatedVectors = await updatePptxFile(fileData.id, data.slides[0].slides)
     const updatedFile: KnowledgeFile = {
       ...fileData,
       vectorIds: updatedVectors,

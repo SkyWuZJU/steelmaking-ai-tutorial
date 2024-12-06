@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from 'react'
 import { Button } from './ui/button'
 import { ErrorCard } from './error-card'
+import { parse } from 'pptxtojson'
+import { CreateFileApiRequest } from '@/lib/types'
 
 const SERVER_URL = `/api/file/update`
 
@@ -19,14 +21,18 @@ const UpdateFileButton: React.FC<UpdateFileButtonProps> = ({
 
   useEffect(() => {
     const handleFileUpload = async (file: File) => {
-      const formData = new FormData()
-      formData.append('file', file)
-      formData.append('fileId', fileId)
+      const parserdFile = await parse(await file.arrayBuffer())
 
       try {
         const response = await fetch(SERVER_URL, {
           method: 'POST',
-          body: formData
+          body: JSON.stringify({
+            slides: [parserdFile],
+            metadata: {
+              fileName: [file.name],
+              fileId: [fileId]
+            }
+          } as CreateFileApiRequest),
         })
 
         if (response.ok) {

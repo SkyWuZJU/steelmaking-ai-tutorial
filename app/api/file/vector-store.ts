@@ -10,6 +10,7 @@ import {
   TextSplitterChunkHeaderOptions
 } from 'langchain/text_splitter'
 import { parsePptxToDocument as loadPptx } from './pptx-to-document'
+import { Slide } from 'pptxtojson'
 
 export const vectorstore = new UpstashVectorStore(
   // LangChain Doc for UpstashVectorStore: https://js.langchain.com/docs/integrations/vectorstores/upstash/
@@ -37,26 +38,21 @@ export async function removeFile(fileId: string) {
 
 /**
  *
- * @param blob supported file types: .ppt, .pptx
+ * @param slides
  * @returns a list of vector IDs in string
  */
-export async function addPptxFile(blob: Blob) {
-
+export async function addPptxFile(slides: Slide[]) {
   const CHUNK_SIZE = 1000
   const CHUNK_OVERLAP = 200
   const VALID_TYPES = [
     'application/vnd.openxmlformats-officedocument.presentationml.presentation' // MIME 类型 for .pptx
   ]
 
-  if (!blob) {
+  if (!slides) {
     throw new Error('No file uploaded')
   }
 
-  if (!VALID_TYPES.includes(blob.type)) {
-    throw new Error(`Invalid file type: ${blob.type}`)
-  }
-
-  const loadedPptx = await loadPptx(blob)
+  const loadedPptx = await loadPptx(slides)
 
   const splitter = new RecursiveCharacterTextSplitter({
     chunkSize: CHUNK_SIZE,
@@ -76,7 +72,7 @@ export async function addPptxFile(blob: Blob) {
   return results
 }
 
-export async function updatePptxFile(fileId: string, blob: Blob) {
+export async function updatePptxFile(fileId: string, slides: Slide[]) {
   await removeFile(fileId)
-  return await addPptxFile(blob)
+  return await addPptxFile(slides)
 }

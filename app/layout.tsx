@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   openGraph: {
     title,
     description
-  },
+  }
 }
 
 export const viewport: Viewport = {

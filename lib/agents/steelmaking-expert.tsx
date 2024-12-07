@@ -19,16 +19,16 @@ export async function steelmakingExpert(
     // Step 1: Prepare required variables
     let fullResponse = ''
     const streamableText = createStreamableValue<string>()
-    const retriever = vectorstore.asRetriever() // TODO: Advanced config for the retriever
     const humanMessageTemplate = HumanMessagePromptTemplate.fromTemplate(PROMPT)
     const model = new ChatOpenAI({
       model: 'gpt-4o-mini',
-      temperature: 0.5
+      temperature: 0.3
     })
     let langchainMessages = aiMessages.map(convertToLangchainBaseMessage)
     langchainMessages = addSystemMessage(langchainMessages, SYSTEM_PROMPT)
 
     // Step 2: Retrieve context knowledge and finalize the message list
+    const retriever = vectorstore.asRetriever(10) // TODO: Advanced config for the retriever
     const retrievedDocuments = await retriever.invoke(
       langchainMessages[langchainMessages.length - 1].content as string
     )

@@ -1,4 +1,4 @@
-import { Slide } from "pptxtojson"
+import { Slide } from 'pptxtojson'
 
 export interface KnowledgePiece {
   content: string
@@ -33,12 +33,12 @@ export type KnowledgeFile = {
 }
 
 export interface User {
-  userName: string; // unique identifier
-  role: 'admin' | 'user';
-  passwordHash: string;
-  createdAt: string;
-  invitationCode: string;
-  fileList?: string[];
+  userName: string // unique identifier
+  role: 'admin' | 'user'
+  passwordHash: string
+  createdAt: string
+  invitationCode: string
+  fileList?: string[]
 }
 
 // Old types defined by Morphic

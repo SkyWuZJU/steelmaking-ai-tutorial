@@ -17,21 +17,21 @@ export function LoginButton() {
     const checkLoginStatus = async () => {
       try {
         const res = await fetch('/api/users/verifyToken', {
-          method: 'POST',
-        });
-        setIsLoggedIn(res.ok);
+          method: 'POST'
+        })
+        setIsLoggedIn(res.ok)
       } catch {
-        setIsLoggedIn(false);
+        setIsLoggedIn(false)
       }
-    };
-    checkLoginStatus();
+    }
+    checkLoginStatus()
   }, [])
 
   const handleLogout = async () => {
     try {
       const res = await fetch('/api/users/logout', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json' }
       })
       if (res.ok) {
         setIsLoggedIn(false)

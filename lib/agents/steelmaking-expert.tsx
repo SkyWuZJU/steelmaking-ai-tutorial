@@ -3,7 +3,11 @@ import { createStreamableUI, createStreamableValue } from 'ai/rsc'
 import { AnswerSection } from '@/components/answer-section'
 import { vectorstore } from '@/app/api/file/vector-store'
 import { ChatOpenAI } from '@langchain/openai'
-import { SystemMessage, HumanMessage, BaseMessage } from '@langchain/core/messages'
+import {
+  SystemMessage,
+  HumanMessage,
+  BaseMessage
+} from '@langchain/core/messages'
 import { HumanMessagePromptTemplate } from '@langchain/core/prompts'
 import { DocumentInterface } from '@langchain/core/documents'
 import { convertToLangchainBaseMessage } from './helper-function'
@@ -66,9 +70,12 @@ const formatDocumentToContext = (documents: DocumentInterface[]): string => {
   return documents.map(doc => doc.pageContent).join('\n')
 }
 
-function addSystemMessage(messages: BaseMessage[], systemPrompt: string): BaseMessage[] {
+function addSystemMessage(
+  messages: BaseMessage[],
+  systemPrompt: string
+): BaseMessage[] {
   if (messages[0].getType() !== 'system') {
-    return [new SystemMessage(systemPrompt), ...messages]    
+    return [new SystemMessage(systemPrompt), ...messages]
   } else {
     return messages
   }

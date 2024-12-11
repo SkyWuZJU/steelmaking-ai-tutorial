@@ -19,7 +19,10 @@ export async function POST(req: Request) {
       )
     }
 
-    const updatedVectors = await updatePptxFile(fileData.id, data.slides[0].slides)
+    const updatedVectors = await updatePptxFile(
+      fileData.id,
+      data.slides[0].slides
+    )
     const updatedFile: KnowledgeFile = {
       ...fileData,
       vectorIds: updatedVectors,

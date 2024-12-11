@@ -2,11 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import {
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-} from '@/components/ui/sheet'
+import { SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet'
 import { Button } from '@/components/ui/button'
 
 export function LoginForm({ onLoginSuccess }: { onLoginSuccess?: () => void }) {
@@ -55,7 +51,12 @@ export function LoginForm({ onLoginSuccess }: { onLoginSuccess?: () => void }) {
         const res = await fetch('/api/users/register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, password, role: 'user', invitationCode })
+          body: JSON.stringify({
+            username,
+            password,
+            role: 'user',
+            invitationCode
+          })
         })
         if (res.ok) {
           setIsLoginMode(true)
@@ -95,7 +96,7 @@ export function LoginForm({ onLoginSuccess }: { onLoginSuccess?: () => void }) {
               type="text"
               required
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={e => setUsername(e.target.value)}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
             />
           </div>
@@ -112,7 +113,7 @@ export function LoginForm({ onLoginSuccess }: { onLoginSuccess?: () => void }) {
               type="password"
               required
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={e => setPassword(e.target.value)}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
             />
           </div>
@@ -130,7 +131,7 @@ export function LoginForm({ onLoginSuccess }: { onLoginSuccess?: () => void }) {
                 type="password"
                 required
                 value={passwordConfirmation}
-                onChange={(e) => setPasswordConfirmation(e.target.value)}
+                onChange={e => setPasswordConfirmation(e.target.value)}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
               />
             </div>
@@ -149,7 +150,7 @@ export function LoginForm({ onLoginSuccess }: { onLoginSuccess?: () => void }) {
                 type="text"
                 required
                 value={invitationCode}
-                onChange={(e) => setInvitationCode(e.target.value)}
+                onChange={e => setInvitationCode(e.target.value)}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
               />
             </div>

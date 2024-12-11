@@ -32,7 +32,7 @@ const UpdateFileButton: React.FC<UpdateFileButtonProps> = ({
               fileName: [file.name],
               fileId: [fileId]
             }
-          } as CreateFileApiRequest),
+          } as CreateFileApiRequest)
         })
 
         if (response.ok) {

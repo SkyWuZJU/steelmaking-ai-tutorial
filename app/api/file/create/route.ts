@@ -1,4 +1,8 @@
-import { KnowledgePiece, KnowledgeFile, CreateFileApiRequest } from '@/lib/types'
+import {
+  KnowledgePiece,
+  KnowledgeFile,
+  CreateFileApiRequest
+} from '@/lib/types'
 import { addPptxFile as indexPpt } from '../vector-store'
 import { createFile as addFileMetadataToRedis } from '../redis'
 import { generateId } from 'ai'

@@ -11,14 +11,21 @@ export async function getUser(userId: string): Promise<User | null> {
   const pipeline = redis.pipeline()
 
   const queryResult = (await pipeline.hgetall(`user:${userId}`).exec())[0]
-  if (!queryResult) { return null }
+  if (!queryResult) {
+    return null
+  }
 
-  const user = Object.keys(queryResult).length > 0 ? { 
-    ...queryResult, 
-    fileList: queryResult.fileList ? JSON.parse(queryResult.fileList as string) : [] 
-  } : null
+  const user =
+    Object.keys(queryResult).length > 0
+      ? {
+          ...queryResult,
+          fileList: queryResult.fileList
+            ? JSON.parse(queryResult.fileList as string)
+            : []
+        }
+      : null
 
-  return user ? (user as User) : null;
+  return user ? (user as User) : null
 }
 
 export async function createUser(user: User) {
@@ -29,7 +36,7 @@ export async function createUser(user: User) {
     role: user.role,
     passwordHash: user.passwordHash,
     createdAt: user.createdAt
-  };
+  }
   if (user.fileList) {
     userRecord.fileList = JSON.stringify(user.fileList)
   }
@@ -73,7 +80,7 @@ export async function createFile(file: KnowledgeFile): Promise<any[]> {
   pipeline.hmset(`file:${file.id}`, file)
 
   const fileList: string[] =
-    !user.fileList || (user.fileList.length === 0)
+    !user.fileList || user.fileList.length === 0
       ? [file.id]
       : [...user.fileList, file.id]
 

@@ -32,12 +32,13 @@ export type KnowledgeFile = {
   updatedAt: string
 }
 
-export type User = {
-  id: string
-  fileList: string[]
-  name?: string
-  role: 'admin' | 'user'
-  createdAt: string
+export interface User {
+  userName: string; // unique identifier
+  role: 'admin' | 'user';
+  passwordHash: string;
+  createdAt: string;
+  invitationCode: string;
+  fileList?: string[];
 }
 
 // Old types defined by Morphic

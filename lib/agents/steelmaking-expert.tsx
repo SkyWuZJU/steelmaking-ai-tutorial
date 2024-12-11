@@ -37,10 +37,10 @@ export async function steelmakingExpert(
       context: formatDocumentToContext(retrievedDocuments)
     })
     langchainMessages.push(new HumanMessage(lastUserMessage))
-    console.debug(
-      '#### Messages ####\n',
-      langchainMessages.map(msg => `${msg.getType()}\n${msg.content}`).join('\n')
-    )
+    // console.debug(
+    //   '#### Messages ####\n',
+    //   langchainMessages.map(msg => `${msg.getType()}\n${msg.content}`).join('\n')
+    // )
 
     // Step 3: Stream the messages to the model
     const result = await model.stream(langchainMessages)

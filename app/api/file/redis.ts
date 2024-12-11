@@ -1,26 +1,40 @@
 import { redisConfig } from '@/lib/redis/config'
 import { Redis } from '@upstash/redis'
 import { KnowledgeFile, User } from '@/lib/types'
-import { get } from 'http'
 
 export const redis = new Redis({
   url: redisConfig.upstashRedisRestUrl,
   token: redisConfig.upstashRedisRestToken
 })
 
-export async function getUser(userId: string) {
+export async function getUser(userId: string): Promise<User | null> {
   const pipeline = redis.pipeline()
 
-  const queryResult = await pipeline.hgetall(`user:${userId}`).exec()
-  const user = queryResult[0] as Record<string, any> | null
+  const queryResult = (await pipeline.hgetall(`user:${userId}`).exec())[0]
+  if (!queryResult) { return null }
 
-  return user
+  const user = Object.keys(queryResult).length > 0 ? { 
+    ...queryResult, 
+    fileList: queryResult.fileList ? JSON.parse(queryResult.fileList as string) : [] 
+  } : null
+
+  return user ? (user as User) : null;
 }
 
-async function createUser(user: User) {
+export async function createUser(user: User) {
   const pipeline = redis.pipeline()
 
-  pipeline.hmset(`user:${user.id}`, user)
+  const userRecord: Record<string, unknown> = {
+    userName: user.userName,
+    role: user.role,
+    passwordHash: user.passwordHash,
+    createdAt: user.createdAt
+  };
+  if (user.fileList) {
+    userRecord.fileList = JSON.stringify(user.fileList)
+  }
+
+  pipeline.hmset(`user:${user.userName}`, userRecord)
   return await pipeline.exec()
 }
 
@@ -59,9 +73,10 @@ export async function createFile(file: KnowledgeFile): Promise<any[]> {
   pipeline.hmset(`file:${file.id}`, file)
 
   const fileList: string[] =
-    user.fileList == '[]'
-      ? JSON.parse(user.fileList).concat(file.id)
-      : [file.id]
+    !user.fileList || (user.fileList.length === 0)
+      ? [file.id]
+      : [...user.fileList, file.id]
+
   pipeline.hmset(`user:${userId}`, { fileList: JSON.stringify(fileList) })
 
   return await pipeline.exec()
@@ -79,11 +94,14 @@ export async function removeFile(fileId: string) {
   const pipeline = redis.pipeline()
 
   pipeline.del(`file:${fileId}`)
-  pipeline.hmset(`user:${user.id}`, {
-    fileList: JSON.stringify(
-      user.fileList.filter((id: string) => id !== fileId)
-    )
-  })
+
+  if (user.fileList) {
+    pipeline.hmset(`user:${user.userName}`, {
+      fileList: JSON.stringify(
+        user.fileList.filter((id: string) => id !== fileId)
+      )
+    })
+  }
 
   const results = await pipeline.exec()
 

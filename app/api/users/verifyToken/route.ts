@@ -3,7 +3,9 @@ import jwt from 'jsonwebtoken'
 
 export async function POST(req: NextRequest) {
   try {
-    const token = req.cookies.get('authToken')?.value
+    const { authToken } = await req.json().catch(() => ({ authToken: null }))
+    const token = authToken || req.cookies.get('authToken')?.value
+    console.debug('AUTH_TOKEN fetched in verifyToken:\n', token)
 
     if (!token) {
       return NextResponse.json({ error: 'No token provided' }, { status: 400 })

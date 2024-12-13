@@ -52,14 +52,14 @@ export function LoginButton() {
   return isLoggedIn ? (
     <Button variant="outline" className="w-full" onClick={handleLogout}>
       <LogOut size={16} className="mr-2" />
-      Logout
+      退出登录
     </Button>
   ) : (
     <Sheet>
       <SheetTrigger asChild>
         <Button variant="outline" className="w-full">
           <LogIn size={16} className="mr-2" />
-          Login
+          账号登录
         </Button>
       </SheetTrigger>
       <SheetContent className="w-80 rounded-tl-xl rounded-bl-xl">

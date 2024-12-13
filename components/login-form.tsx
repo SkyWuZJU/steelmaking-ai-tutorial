@@ -78,7 +78,7 @@ export function LoginForm({ onLoginSuccess }: { onLoginSuccess?: () => void }) {
     <SheetContent className="w-80 rounded-tl-xl rounded-bl-xl">
       <SheetHeader>
         <SheetTitle className="flex items-center gap-1 text-sm font-normal mb-2">
-          {isLoginMode ? 'Login' : 'Register'}
+          {isLoginMode ? '登录' : '注册'}
         </SheetTitle>
       </SheetHeader>
       <div className="my-2 h-full pb-12 md:pb-10">
@@ -88,7 +88,7 @@ export function LoginForm({ onLoginSuccess }: { onLoginSuccess?: () => void }) {
               htmlFor="username"
               className="block text-sm font-medium text-gray-700"
             >
-              Username
+              用户名
             </label>
             <input
               id="username"
@@ -105,7 +105,7 @@ export function LoginForm({ onLoginSuccess }: { onLoginSuccess?: () => void }) {
               htmlFor="password"
               className="block text-sm font-medium text-gray-700"
             >
-              Password
+              密码
             </label>
             <input
               id="password"
@@ -123,7 +123,7 @@ export function LoginForm({ onLoginSuccess }: { onLoginSuccess?: () => void }) {
                 htmlFor="passwordConfirmation"
                 className="block text-sm font-medium text-gray-700"
               >
-                Confirm Password
+                密码确认
               </label>
               <input
                 id="passwordConfirmation"
@@ -142,7 +142,7 @@ export function LoginForm({ onLoginSuccess }: { onLoginSuccess?: () => void }) {
                 htmlFor="invitationCode"
                 className="block text-sm font-medium text-gray-700"
               >
-                Invitation Code
+                邀请码
               </label>
               <input
                 id="invitationCode"
@@ -159,29 +159,29 @@ export function LoginForm({ onLoginSuccess }: { onLoginSuccess?: () => void }) {
             <div className="text-red-500 text-sm">{errorMessage}</div>
           )}
           <Button type="submit" className="w-full">
-            {isLoginMode ? 'Login' : 'Register'}
+            {isLoginMode ? '登录' : '注册'}
           </Button>
           <div className="text-sm text-center">
             {isLoginMode ? (
               <p>
-                Don&apos;t have an account?{' '}
+                没有账号？{' '}
                 <button
                   type="button"
                   onClick={() => setIsLoginMode(false)}
                   className="text-blue-600 hover:underline"
                 >
-                  Register
+                  立即注册
                 </button>
               </p>
             ) : (
               <p>
-                Already have an account?{' '}
+                已有账号？{' '}
                 <button
                   type="button"
                   onClick={() => setIsLoginMode(true)}
                   className="text-blue-600 hover:underline"
                 >
-                  Login
+                  登录
                 </button>
               </p>
             )}

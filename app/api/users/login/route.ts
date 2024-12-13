@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getUser } from '@/app/api/file/redis'
 import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
+import { SignJWT } from 'jose'
 
 export async function POST(req: NextRequest) {
   const { username, password } = await req.json()
@@ -12,13 +12,12 @@ export async function POST(req: NextRequest) {
     if (!process.env.JWT_SECRET) {
       throw new Error('JWT_SECRET is not defined')
     }
-    const token = jwt.sign(
-      { userName: user.userName },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: '7d' // Token expires in 7 days
-      }
-    )
+    const encoder = new TextEncoder()
+    const secretKey = encoder.encode(process.env.JWT_SECRET)
+    const token = await new SignJWT({ userName: user.userName })
+      .setProtectedHeader({ alg: 'HS256' })
+      .setExpirationTime('7d')
+      .sign(secretKey)
 
     // Set the token in an HTTP-only cookie
     const response = NextResponse.json({ message: 'Login successful' })

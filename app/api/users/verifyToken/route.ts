@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import jwt from 'jsonwebtoken'
+import { jwtVerify } from 'jose'
 
 export async function POST(req: NextRequest) {
   try {
@@ -18,8 +18,10 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const data = jwt.verify(token, process.env.JWT_SECRET)
-    return NextResponse.json({ data })
+    const encoder = new TextEncoder()
+    const secretKey = encoder.encode(process.env.JWT_SECRET)
+    const { payload } = await jwtVerify(token, secretKey)
+    return NextResponse.json({ data: payload })
   } catch (error) {
     return NextResponse.json(
       { error: 'Invalid or expired token' },

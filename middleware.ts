@@ -3,17 +3,26 @@ import { jwtVerify } from 'jose'
 
 export async function middleware(req: NextRequest) {
   const token = req.cookies.get('authToken')?.value || ''
-  console.debug('AUTH_TOKEN fetched in middleware:\n', token)
+
   try {
     if (!token) {
       return NextResponse.redirect(`${req.nextUrl.origin}/login`)
     }
+
     if (!process.env.JWT_SECRET) {
       throw new Error('JWT_SECRET is not defined')
     }
+
     const encoder = new TextEncoder()
     const secretKey = encoder.encode(process.env.JWT_SECRET)
     const { payload } = await jwtVerify(token, secretKey)
+    const userRole = payload.userRole
+
+    // Block access to '/knowledge' if user is not an admin
+    if (req.nextUrl.pathname.startsWith('/knowledge') && userRole !== 'admin') {
+      return NextResponse.redirect(`${req.nextUrl.origin}/login`)
+    }
+
     // Optionally attach user info to the request
     // req['user'] = payload
     return NextResponse.next()
@@ -24,5 +33,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/search/:path*']
+  matcher: ['/search/:path*', '/knowledge']
 }

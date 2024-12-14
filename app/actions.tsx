@@ -20,6 +20,8 @@ import RetrieveSection from '@/components/retrieve-section'
 import { VideoSearchSection } from '@/components/video-search-section'
 import { AnswerSection } from '@/components/answer-section'
 import { workflow } from '@/lib/actions/workflow'
+import { getUserIdFromToken } from '@/lib/auth'
+import { redirect } from 'next/navigation'
 
 const MAX_MESSAGES = 6
 
@@ -29,6 +31,9 @@ async function submit(
   retryMessages?: AIMessage[]
 ) {
   'use server'
+  if (!(await getUserIdFromToken())) {
+    return redirect('/login')
+  }
 
   const aiState = getMutableAIState<typeof AI>()
   const uiStream = createStreamableUI()
@@ -159,7 +164,7 @@ export const AI = createAI<AIState, UIState>({
 
     const { chatId, messages } = state
     const createdAt = new Date()
-    const userId = 'anonymous'
+    const userId = (await getUserIdFromToken()) ?? redirect('/login')
     const path = `/search/${chatId}`
     const title =
       messages.length > 0
@@ -185,7 +190,7 @@ export const AI = createAI<AIState, UIState>({
       title,
       messages: updatedMessages
     }
-    await saveChat(chat)
+    await saveChat(chat, userId)
   }
 })
 

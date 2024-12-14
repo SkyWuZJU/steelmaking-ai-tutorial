@@ -7,6 +7,7 @@ import { addPptxFile as indexPpt } from '../vector-store'
 import { createFile as addFileMetadataToRedis } from '../redis'
 import { generateId } from 'ai'
 import { Slide } from 'pptxtojson'
+import { getUserIdFromToken } from '@/lib/auth'
 
 export async function POST(req: Request) {
   try {
@@ -26,7 +27,7 @@ export async function POST(req: Request) {
     const fileMetadata: KnowledgeFile = {
       id: generateId(),
       name: metadata.fileName[0],
-      uploaderUserId: 'anonymous', // TODO: retrieve userId from the request
+      uploaderUserId: (await getUserIdFromToken()) ?? 'anonymous', // TODO: retrieve userId from the request
       updatedAt: new Date().toISOString(),
       format: 'unknown',
       vectorIds: [] as string[]

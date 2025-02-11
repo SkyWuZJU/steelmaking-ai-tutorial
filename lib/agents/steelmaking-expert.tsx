@@ -13,7 +13,7 @@ import { DocumentInterface } from '@langchain/core/documents'
 import { convertToLangchainBaseMessage } from './helper-function'
 
 const SYSTEM_PROMPT = `你是一名转炉炼钢领域的专家。对于用户提出的问题，你善于将提供的背景知识和自己的经验知识相结合，给出专业和直接的回答。`
-const PROMPT = `用户：{user_message}\n参考知识：{context}`
+const PROMPT = '用户现在的问题：{user_message}\n参考知识：{context}'
 
 export async function steelmakingExpert(
   uiStream: ReturnType<typeof createStreamableUI>,
@@ -28,7 +28,7 @@ export async function steelmakingExpert(
       model: 'gpt-4o-mini',
       temperature: 0.3
     })
-    let langchainMessages = aiMessages.map(convertToLangchainBaseMessage)
+    let langchainMessages = aiMessages.map(convertToLangchainBaseMessage)  // TODO：parser一下所有的human message，现在格式是{"input":"内容"}
     langchainMessages = addSystemMessage(langchainMessages, SYSTEM_PROMPT)
 
     // Step 2: Retrieve context knowledge and finalize the message list
@@ -40,7 +40,8 @@ export async function steelmakingExpert(
       user_message: aiMessages[aiMessages.length - 1].content,
       context: formatDocumentToContext(retrievedDocuments)
     })
-    langchainMessages.push(new HumanMessage(lastUserMessage))
+
+    langchainMessages[langchainMessages.length - 1].content = lastUserMessage.content
     // console.debug(
     //   '#### Messages ####\n',
     //   langchainMessages.map(msg => `${msg.getType()}\n${msg.content}`).join('\n')

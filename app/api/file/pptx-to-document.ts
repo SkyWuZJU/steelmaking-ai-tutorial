@@ -14,9 +14,6 @@ export const parsePptxToDocument = async (
   slides: Slide[]
 ): Promise<Document[]> => {
   const cleanedSlides = removeDuplicatedElements(slides)
-  cleanedSlides.map((slide, index) => {
-    slide.elements.forEach(element => console.debug('\n', element))
-  })
 
   const documents = parseSlidesToDocument(cleanedSlides)
 

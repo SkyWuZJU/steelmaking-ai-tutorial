@@ -11,7 +11,7 @@ export async function GET(request: Request) {
       }
     })
   } catch (error) {
-    console.error('Error processing api/file/get-all:', error)
+    console.error('Error when processing api/file/get-all:', error)
     return new Response(JSON.stringify({ error: 'Failed to get all files' }), {
       status: 500,
       headers: {

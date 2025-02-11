@@ -20,8 +20,7 @@ export async function getUser(userId: string): Promise<User | null> {
       ? {
           ...queryResult,
           fileList: queryResult.fileList
-            ? JSON.parse(queryResult.fileList as string)
-            : []
+            ?? []
         }
       : null
 
@@ -48,6 +47,9 @@ export async function createUser(user: User) {
 export async function getFiles(
   fileIds: string[]
 ): Promise<(KnowledgeFile | null)[]> {
+  if (fileIds.length === 0) 
+    return []
+
   const pipeline = redis.pipeline()
 
   fileIds.forEach(fileId => {

@@ -18,17 +18,17 @@ export function LoginForm({ onLoginSuccess }: { onLoginSuccess?: () => void }) {
     e.preventDefault()
 
     if (!username || !password || (!isLoginMode && !passwordConfirmation)) {
-      setErrorMessage('Please fill out all fields')
+      setErrorMessage('内容缺失')
       return
     }
 
     if (!isLoginMode && password !== passwordConfirmation) {
-      setErrorMessage('Passwords do not match')
+      setErrorMessage('密码错误')
       return
     }
 
     if (!isLoginMode && !invitationCode) {
-      setErrorMessage('Please enter your invitation code')
+      setErrorMessage('请输入你的邀请码')
       return
     }
 
@@ -45,7 +45,7 @@ export function LoginForm({ onLoginSuccess }: { onLoginSuccess?: () => void }) {
           if (onLoginSuccess) onLoginSuccess()
         } else {
           const data = await res.json()
-          setErrorMessage(data.message || 'Login failed')
+          setErrorMessage(data.message || '登录失败')
         }
       } else {
         const res = await fetch('/api/users/register', {
@@ -60,17 +60,17 @@ export function LoginForm({ onLoginSuccess }: { onLoginSuccess?: () => void }) {
         })
         if (res.ok) {
           setIsLoginMode(true)
-          setErrorMessage('Registration successful. Please log in.')
+          setErrorMessage('注册成功！请登录')
         } else if (res.status === 400) {
-          setErrorMessage('Username already exists. Please choose another one.')
+          setErrorMessage('用户名重复')
         } else {
           const data = await res.json()
-          setErrorMessage(data.message || 'Registration failed')
+          setErrorMessage(data.message || '注册失败')
         }
       }
     } catch (error) {
       console.debug('Error in login form:\n', error)
-      setErrorMessage('An error occurred. Please try again.')
+      setErrorMessage('出现报错，请重试。报错代码为：'+error)
     }
   }
 

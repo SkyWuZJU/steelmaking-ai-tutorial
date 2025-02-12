@@ -28,7 +28,8 @@ export async function steelmakingExpert(
       model: 'gpt-4o-mini',
       temperature: 0.3
     })
-    let langchainMessages = aiMessages.map(convertToLangchainBaseMessage)  // TODO：parser一下所有的human message，现在格式是{"input":"内容"}
+    let langchainMessages = aiMessages.map(convertToLangchainBaseMessage)
+    langchainMessages = formatAllHumanMessages(langchainMessages)
     langchainMessages = addSystemMessage(langchainMessages, SYSTEM_PROMPT)
 
     // Step 2: Retrieve context knowledge and finalize the message list
@@ -80,4 +81,26 @@ function addSystemMessage(
   } else {
     return messages
   }
+}
+
+function formatAllHumanMessages(messages: BaseMessage[]): BaseMessage[] {
+  return messages.map(msg => {
+    if (msg.getType() === 'human') {
+      return new HumanMessage(parseInputString((msg as HumanMessage).content as string))
+    } else {
+      return msg
+    }
+  })
+}
+
+function parseInputString(possibleJson: string): string {
+  try {
+    const obj = JSON.parse(possibleJson)
+    if (obj && typeof obj === 'object' && 'input' in obj) {
+      return obj.input
+    }
+  } catch {
+    // do nothing
+  }
+  return possibleJson
 }

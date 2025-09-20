@@ -13,7 +13,7 @@ import { DocumentInterface } from '@langchain/core/documents'
 import { convertToLangchainBaseMessage } from './helper-function'
 
 const SYSTEM_PROMPT = `你是一名转炉炼钢领域的专家。对于用户提出的问题，你善于将提供的背景知识和自己的经验知识相结合，给出专业和直接的回答。`
-const PROMPT = '用户现在的问题：{user_message}\n参考知识：{context}'
+const PROMPT = '{user_message}\n\n\n---------参考知识---------\n{context}\n---------参考知识结束---------\n\n\n请结合参考知识回答最开始的用户问题{user_message}'
 
 export async function steelmakingExpert(
   uiStream: ReturnType<typeof createStreamableUI>,
